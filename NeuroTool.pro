@@ -18,3 +18,7 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui
+
+INCLUDEPATH += /opt/local/include
+LIBS += -L/opt/local/lib
+LIBS += -lboost_system-mt -lboost_regex-mt -lboost_filesystem-mt -lboost_thread-mt
