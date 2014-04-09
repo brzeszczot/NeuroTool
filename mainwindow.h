@@ -14,7 +14,7 @@ namespace Ui
     class MainWindow;
 }
 
-//const boost::regex wyrazenie("[0-9a-z]{1,10}");
+const boost::regex wyrazenie("[0-9a-z]{1,10}");
 
 class MainWindow: public QMainWindow
 {

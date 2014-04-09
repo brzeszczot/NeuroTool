@@ -21,6 +21,16 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui
 
-INCLUDEPATH += /opt/local/include
-LIBS += -L/opt/local/lib
-LIBS += -lboost_system-mt -lboost_regex-mt -lboost_filesystem-mt -lboost_thread-mt
+#INCLUDEPATH += /opt/local/include
+#LIBS += -L/opt/local/lib
+#LIBS += -lboost_system-mt -lboost_regex-mt -lboost_filesystem-mt -lboost_thread-mt
+
+
+
+win32:INCLUDEPATH += "C:\Qt\Tools\boost_1_55_0"
+win32:LIBS += "C:\Qt\Tools\boost_1_55_0\stage\lib\libboost_regex-mgw48-mt-1_55.a"
+
+#unix:INCLUDEPATH += "/home/user/extra headers"
+#    unix:!macx {
+#    INCLUDEPATH += ./unix_stuff
+#    }
