@@ -10,7 +10,13 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     createActions();
     createMenus();
     statusBar()->showMessage(tr("Program gotowy do pracy..."));
-
+/*
+#ifdef QT_DEBUG
+  statusBar()->showMessage(tr("DEBUG"));
+#else
+  statusBar()->showMessage(tr("RELEASE"));
+#endif
+*/
     //this->setWindowTitle(QCoreApplication::applicationName());
     // this->setWindowTitle(QString::fromStdString(program_full_name));
     //QSettings settings;
@@ -27,16 +33,39 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
 void MainWindow::mmpi2_admin()
 {
-    statusBar()->showMessage(tr("MMPI-2 (Szybkie wprowadzanie)"));
+    statusBar()->showMessage(tr("MMPI-2 (szybkie wprowadzanie)"));
 
-    ui->tableWidget->setEnabled(true);
-    ui->tableWidget->setVisible(true);
+    //ui->tableWidget->setEnabled(true);
+    //ui->tableWidget->setVisible(true);
 }
 
 void MainWindow::setUpWidgets()
 {
-    ui->tableWidget->setEnabled(false);
-    ui->tableWidget->setVisible(false);
+    prepareMMPITable();
+}
+
+void MainWindow::prepareMMPITable()
+{
+    ui->tableWidget->setRowCount(Q_QUESTIONS);
+
+    QRegExp rx("[0-9]");
+    QValidator *validator = new QRegExpValidator(rx, this);
+
+    QTableWidgetItem *newItem;
+    for(size_t ii=0; ii<Q_QUESTIONS; ii++)
+    {
+        //QString::number(ii+1)
+        newItem = new QTableWidgetItem("");
+        ui->tableWidget->setItem(ii, 0, newItem);
+        newItem = new QTableWidgetItem("QString::number(ii+1)");
+        ui->tableWidget->item(ii,1)->setFlags(NULL);
+        ui->tableWidget->item(ii,1)->setValidator(validator);
+        ui->tableWidget->setItem(ii, 1, newItem);
+    }
+/*
+    QTableWidgetItem *a = tableWidgetMMPI->item(5,0);
+   int val = a->text().toInt();
+*/
 }
 
 void MainWindow::createActions()
@@ -51,19 +80,14 @@ void MainWindow::createActions()
 
     act_about = new QAction(tr("&O programie..."), this);
     connect(act_about, SIGNAL(triggered()), this, SLOT(about()));
-
-    // mac osx
-    //act_mmpi2_patient->setMenuRole(QAction::PreferencesRole);
 }
 
 void MainWindow::createMenus()
 {
-    menu_mmpi2 = ui->menuBar->addMenu(tr("&MMPI-2"));
-    menu_mmpi2->addAction(act_mmpi2_patient);
-    menu_mmpi2->addAction(act_mmpi2_admin);
-
     act_about->setMenuRole(QAction::AboutRole);
-    menu_mmpi2->addAction(act_about);
+    menu_program = ui->menuBar->addMenu(tr("&NeuroTool"));
+    menu_program->addAction(act_about);
+
     //menuBar()->addSeparator();
 }
 

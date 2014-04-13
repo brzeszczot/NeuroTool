@@ -5,7 +5,10 @@
 #define FALSE_NAME      "Fałsz"
 
 #include <QMainWindow>
+#include <QDesktopWidget>
+#include <QTableWidget>
 #include <QMessageBox>
+#include <QRegExpValidator>
 #include <QSettings>
 #include "boost/regex.hpp"
 
@@ -29,11 +32,12 @@ class MainWindow: public QMainWindow
         void setUpWidgets();
         void createActions();
         void createMenus();
+        void prepareMMPITable();
         Ui::MainWindow *ui;
         QAction *act_mmpi2_patient;
         QAction *act_mmpi2_admin;
         QAction *act_about;
-        QMenu *menu_mmpi2;
+        QMenu *menu_program;
 
         //boost::cmatch matches;
 };
