@@ -7,6 +7,7 @@
 #include <QMainWindow>
 #include <QDesktopWidget>
 #include <QTableWidget>
+#include <QHeaderView>
 #include <QMessageBox>
 //#include <QRegExpValidator>
 //#include <QSettings>
@@ -20,7 +21,8 @@ namespace Ui
     class MainWindow;
 }
 
-const boost::regex wyrazenie("[0-9a-z]{1,10}");
+const boost::regex reg_true("[pP]{1}");
+const boost::regex reg_false("[fF]{1}");
 
 class MainWindow: public QMainWindow
 {
@@ -29,20 +31,17 @@ class MainWindow: public QMainWindow
         explicit MainWindow(QWidget *parent = 0);
         ~MainWindow();
     private slots:
-        void mmpi2_admin();
         void about();
+        void event_table_mmpi2_cell_changed(int row, int column);
     private:
         void setUpWidgets();
         void createActions();
         void createMenus();
         void prepareMMPITable();
         Ui::MainWindow *ui;
-        QAction *act_mmpi2_patient;
-        QAction *act_mmpi2_admin;
         QAction *act_about;
         QMenu *menu_program;
-
-        //boost::cmatch matches;
+        boost::cmatch reg_matches;
 };
 
 #endif // MAINWINDOW_H

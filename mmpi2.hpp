@@ -1,7 +1,7 @@
 #ifndef MMPI2_HPP
 #define MMPI2_HPP
 
-#define Q_QUESTIONS 100   // 567
+#define Q_QUESTIONS 20   // 567
 #define Q_SCALES    20  // ???
 #define Q_VRIN      67
 #define Q_TRIN1     13
@@ -9,6 +9,9 @@
 #define Q_NORMS     200 // ???
 #define TRUE_INT    1
 #define FALSE_INT   0
+
+namespace MMPI2
+{
 
 const std::string scales_names[Q_SCALES] =
 {
@@ -71,6 +74,8 @@ const std::string questions[Q_QUESTIONS] =
     "Pytanie numer 6",
     "Pytanie numer 7",
     "Pytanie numer 8"
+};
+
 };
 
 #endif // MMPI2_HPP
