@@ -8,9 +8,12 @@
 #include <QDesktopWidget>
 #include <QTableWidget>
 #include <QMessageBox>
-#include <QRegExpValidator>
-#include <QSettings>
+//#include <QRegExpValidator>
+//#include <QSettings>
+
 #include "boost/regex.hpp"
+#include "ui_mainwindow.h"
+#include "mmpi2.hpp"
 
 namespace Ui
 {

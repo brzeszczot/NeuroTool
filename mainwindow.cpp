@@ -1,6 +1,4 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "mmpi2.hpp"
 
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -48,8 +46,8 @@ void MainWindow::prepareMMPITable()
 {
     ui->tableWidget->setRowCount(Q_QUESTIONS);
 
-    QRegExp rx("[0-9]");
-    QValidator *validator = new QRegExpValidator(rx, this);
+//    QRegExp rx("[0-9]");
+//    QValidator *validator = new QRegExpValidator(rx, this);
 
     QTableWidgetItem *newItem;
     for(size_t ii=0; ii<Q_QUESTIONS; ii++)
@@ -59,7 +57,9 @@ void MainWindow::prepareMMPITable()
         ui->tableWidget->setItem(ii, 0, newItem);
         newItem = new QTableWidgetItem("QString::number(ii+1)");
         ui->tableWidget->item(ii,1)->setFlags(NULL);
-        ui->tableWidget->item(ii,1)->setValidator(validator);
+
+        //ui->tableWidget->item(ii,1)->setValidator(validator);
+
         ui->tableWidget->setItem(ii, 1, newItem);
     }
 /*
