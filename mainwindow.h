@@ -37,12 +37,15 @@ class MainWindow: public QMainWindow
         void setUpWidgets();
         void createActions();
         void createMenus();
-        void prepareMMPITable();
+        void prepareMMPI2Table();
+        void prepareMMPI2ResultTab();
         void keyPressEvent(QKeyEvent*);
         void event_mmpi2_set_cell(int row, int column, bool v);
+        bool mmpi2_test_completed_check(int column);
         Ui::MainWindow *ui;
         QAction *act_about;
         QMenu *menu_program;
+        MMPI2::Calc *Mmpi2;
         boost::cmatch reg_matches;
 };
 

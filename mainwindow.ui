@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>682</width>
-    <height>431</height>
+    <height>493</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -56,34 +56,53 @@
          </layout>
         </item>
         <item>
-         <widget class="QTableWidget" name="tableWidget">
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
+         <widget class="QTabWidget" name="tabWidget_2">
+          <property name="currentIndex">
+           <number>0</number>
           </property>
-          <attribute name="horizontalHeaderVisible">
-           <bool>true</bool>
-          </attribute>
-          <attribute name="verticalHeaderVisible">
-           <bool>false</bool>
-          </attribute>
-          <column>
-           <property name="text">
-            <string>Nr</string>
-           </property>
-           <property name="textAlignment">
-            <set>AlignHCenter|AlignVCenter|AlignCenter</set>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Wartość</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Pytanie</string>
-           </property>
-          </column>
+          <widget class="QWidget" name="tab_3">
+           <attribute name="title">
+            <string>Szybkie wprowadzanie</string>
+           </attribute>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QTableWidget" name="tableWidget">
+              <property name="layoutDirection">
+               <enum>Qt::LeftToRight</enum>
+              </property>
+              <attribute name="horizontalHeaderVisible">
+               <bool>true</bool>
+              </attribute>
+              <attribute name="verticalHeaderVisible">
+               <bool>false</bool>
+              </attribute>
+              <column>
+               <property name="text">
+                <string>Nr</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Wartość</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Pytanie</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_4">
+           <attribute name="title">
+            <string>Wyniki</string>
+           </attribute>
+          </widget>
          </widget>
         </item>
        </layout>

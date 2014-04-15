@@ -13,7 +13,8 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    mmpi2.cpp
 
 HEADERS  += mainwindow.h \
     mmpi2.hpp \

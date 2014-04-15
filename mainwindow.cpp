@@ -7,6 +7,9 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     setUpWidgets();
     createActions();
     createMenus();
+
+    Mmpi2 = new MMPI2::Calc();
+
     //statusBar()->showMessage(tr("Program gotowy do pracy..."));
 /*
 #ifdef QT_DEBUG
@@ -24,12 +27,17 @@ if(regex_match(selected_item->text().toStdString().c_str(), reg_matches, reg_tru
 
 void MainWindow::setUpWidgets()
 {
-    prepareMMPITable();
+    prepareMMPI2Table();
 }
 
-void MainWindow::prepareMMPITable()
+void MainWindow::prepareMMPI2ResultTab()
 {
-    ui->tableWidget->setRowCount(Q_QUESTIONS);
+
+}
+
+void MainWindow::prepareMMPI2Table()
+{
+    ui->tableWidget->setRowCount(MMPI2::Q_QUESTIONS);
     ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
     ui->tableWidget->setColumnWidth(0, 30);
 //    QRegExp rx("[0-9]");
@@ -39,7 +47,7 @@ void MainWindow::prepareMMPITable()
     //ui->tableWidget->rowCount()
     //mTestTable->removeRow(0);
     //mTestTable->setRowCount(0); // delete all cells automaticly
-    for(size_t ii=0; ii<Q_QUESTIONS; ii++)
+    for(size_t ii=0; ii<MMPI2::Q_QUESTIONS; ii++)
     {
         //QString::number(ii+1)
         newItem = new QTableWidgetItem(QString::number(ii+1));
@@ -84,6 +92,7 @@ void MainWindow::about()
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
+    // handle events on mmpi2 table (Right key = true, Left key = false)
     int row, col;
     col = ui->tableWidget->selectionModel()->currentIndex().column();
     row = ui->tableWidget->selectionModel()->currentIndex().row();
@@ -98,6 +107,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
 void MainWindow::event_mmpi2_set_cell(int row, int column, bool v)
 {
+    Mmpi2->raw_answers[row] = v;
+
     ui->tableWidget->selectionModel()->clearSelection();
     QModelIndex next_cell = ui->tableWidget->model()->index(row+1, column);
     QTableWidgetItem *selected_item = ui->tableWidget->item(row,column);
@@ -116,6 +127,27 @@ void MainWindow::event_mmpi2_set_cell(int row, int column, bool v)
         ui->tableWidget->selectionModel()->select(next_cell, QItemSelectionModel::Select);
         ui->tableWidget->setCurrentIndex(next_cell);
     }
+
+    if(mmpi2_test_completed_check(column))
+    {
+        ui->tabWidget_2->setCurrentIndex(1);
+
+    }
+}
+
+bool MainWindow::mmpi2_test_completed_check(int column)
+{
+    int cc = 0;
+    for(int row = 0; row<ui->tableWidget->rowCount(); row++)
+    {
+        QTableWidgetItem *selected_item = ui->tableWidget->item(row, column);
+        if(selected_item->text().toStdString().length() > 0)
+            cc++;
+    }
+    if(cc == MMPI2::Q_QUESTIONS)
+        return true;
+
+    return false;
 }
 
 MainWindow::~MainWindow()
