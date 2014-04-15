@@ -9,6 +9,7 @@
 #include <QTableWidget>
 #include <QHeaderView>
 #include <QMessageBox>
+#include <QKeyEvent>
 //#include <QRegExpValidator>
 //#include <QSettings>
 
@@ -32,12 +33,13 @@ class MainWindow: public QMainWindow
         ~MainWindow();
     private slots:
         void about();
-        void event_table_mmpi2_cell_changed(int row, int column);
     private:
         void setUpWidgets();
         void createActions();
         void createMenus();
         void prepareMMPITable();
+        void keyPressEvent(QKeyEvent*);
+        void event_mmpi2_set_cell(int row, int column, bool v);
         Ui::MainWindow *ui;
         QAction *act_about;
         QMenu *menu_program;

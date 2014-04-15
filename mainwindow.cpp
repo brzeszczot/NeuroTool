@@ -15,18 +15,11 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
   statusBar()->showMessage(tr("RELEASE"));
 #endif
 */
-    //this->setWindowTitle(QCoreApplication::applicationName());
+/*
+if(regex_match(selected_item->text().toStdString().c_str(), reg_matches, reg_true))
+*/
     // this->setWindowTitle(QString::fromStdString(program_full_name));
     //QSettings settings;
-    /*
-    std::string str = "alamakota";
-    if(regex_match(str.c_str(), matches, wyrazenie))
-    {
-        ui->pushButton->move(0, 0);
-        ui->pushButton->setFixedWidth(300);
-        ui->pushButton->setText(QString::fromStdString(str));
-    }
-    */
 }
 
 void MainWindow::setUpWidgets()
@@ -73,7 +66,7 @@ void MainWindow::createActions()
     act_about = new QAction(tr("&O programie..."), this);
     connect(act_about, SIGNAL(triggered()), this, SLOT(about()));
 
-    connect(ui->tableWidget, SIGNAL(cellChanged(int, int)), this, SLOT(event_table_mmpi2_cell_changed(int,int)));
+    //connect(ui->tableWidget, SIGNAL(cellChanged(int, int)), this, SLOT(event_table_mmpi2_cell_changed(int,int)));
 }
 
 void MainWindow::createMenus()
@@ -89,38 +82,44 @@ void MainWindow::about()
     QMessageBox::about(this, tr("O programie..."), tr("brzeszczot@gmail.com"));
 }
 
-MainWindow::~MainWindow()
+void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-    ui->tableWidget->clearContents();
-    delete ui;
+    int row, col;
+    col = ui->tableWidget->selectionModel()->currentIndex().column();
+    row = ui->tableWidget->selectionModel()->currentIndex().row();
+    if(row >= 0 && col >= 0)
+    {
+        if(event->key() == Qt::Key_Right)
+            event_mmpi2_set_cell(row, col, true);
+        else if(event->key() == Qt::Key_Left)
+            event_mmpi2_set_cell(row, col, false);
+    }
 }
 
-void MainWindow::event_table_mmpi2_cell_changed(int row, int column)
+void MainWindow::event_mmpi2_set_cell(int row, int column, bool v)
 {
     ui->tableWidget->selectionModel()->clearSelection();
-
     QModelIndex next_cell = ui->tableWidget->model()->index(row+1, column);
-    QModelIndex current_cell = ui->tableWidget->model()->index(row, column);
-
     QTableWidgetItem *selected_item = ui->tableWidget->item(row,column);
-    if(regex_match(selected_item->text().toStdString().c_str(), reg_matches, reg_true))
+
+    if(v)
     {
         selected_item->setText(TRUE_NAME);
         selected_item->setBackground(Qt::green);
         ui->tableWidget->selectionModel()->select(next_cell, QItemSelectionModel::Select);
         ui->tableWidget->setCurrentIndex(next_cell);
     }
-    else if(regex_match(selected_item->text().toStdString().c_str(), reg_matches, reg_false))
+    else
     {
         selected_item->setText(FALSE_NAME);
         selected_item->setBackground(Qt::red);
         ui->tableWidget->selectionModel()->select(next_cell, QItemSelectionModel::Select);
         ui->tableWidget->setCurrentIndex(next_cell);
     }
-    else
-    {
-        ui->tableWidget->selectionModel()->select(current_cell, QItemSelectionModel::Select);
-        //ui->tableWidget->setCurrentIndex(current_cell);
-        //selected_item->setBackground(Qt::white);
-    }
+}
+
+MainWindow::~MainWindow()
+{
+    ui->tableWidget->clearContents();
+    delete ui;
 }
