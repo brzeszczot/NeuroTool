@@ -8,8 +8,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     createActions();
     createMenus();
 
-    mmpi2 = new MMPI2::Calc();
-
     //statusBar()->showMessage(tr("Program gotowy do pracy..."));
 /*
 #ifdef QT_DEBUG
@@ -27,6 +25,9 @@ if(regex_match(selected_item->text().toStdString().c_str(), reg_matches, reg_tru
 
 void MainWindow::setUpWidgets()
 {
+    ui->tabWidget->setTabText(0, QString::fromStdString(TAB_NAMES[MMPI2]));
+    ui->tabWidget->setTabText(1, QString::fromStdString(TAB_NAMES[EMPTY]));
+
     prepareMMPI2Table();
 }
 
@@ -53,16 +54,9 @@ void MainWindow::about()
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-    // handle events on mmpi2 table (Right key = true, Left key = false)
-    int row, col;
-    col = ui->tableWidget->selectionModel()->currentIndex().column();
-    row = ui->tableWidget->selectionModel()->currentIndex().row();
-    if(row >= 0 && col >= 0)
+    switch(ui->tabWidget->currentIndex())
     {
-        if(event->key() == Qt::Key_Right)
-            event_mmpi2_set_cell(row, col, true);
-        else if(event->key() == Qt::Key_Left)
-            event_mmpi2_set_cell(row, col, false);
+        case MMPI2: event_mmpi2_new(event->key()); break;
     }
 }
 

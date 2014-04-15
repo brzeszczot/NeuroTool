@@ -17,18 +17,21 @@
 #include "ui_mainwindow.h"
 #include "mmpi2.hpp"
 
+const std::string TAB_NAMES[2] = {"MMPI-2", "..."};
+
 namespace Ui
 {
     class MainWindow;
 }
 
 const boost::regex reg_true("[pP]{1}");
-const boost::regex reg_false("[fF]{1}");
 
 class MainWindow: public QMainWindow
 {
     Q_OBJECT
     public:
+        // must ovelap with TAB_NAMES array
+        enum TABS {MMPI2, EMPTY};
         explicit MainWindow(QWidget *parent = 0);
         ~MainWindow();
     private slots:
@@ -41,6 +44,7 @@ class MainWindow: public QMainWindow
         // mmpi2
         void prepareMMPI2Table();
         void prepareMMPI2ResultTab();
+        void event_mmpi2_new(int key);
         void event_mmpi2_set_cell(int row, int column, bool v);
         bool mmpi2_test_completed_check(int column);
         Ui::MainWindow *ui;

@@ -37,6 +37,9 @@ ui->tableWidget->setCellWidget(rowCount, column, checkBox);
     }
    // QTableWidgetItem *a = ui->tableWidget->item(5,1);
    //int val = a->text().toInt();
+
+    // create object MMPI-2 calculator
+    mmpi2 = new MMPI2::Calc();
 }
 
 void MainWindow::event_mmpi2_set_cell(int row, int column, bool v)
@@ -82,4 +85,19 @@ bool MainWindow::mmpi2_test_completed_check(int column)
         return true;
 
     return false;
+}
+
+void MainWindow::event_mmpi2_new(int key)
+{
+    // handle events on mmpi2 table (Right key = true, Left key = false)
+    int row, col;
+    col = ui->tableWidget->selectionModel()->currentIndex().column();
+    row = ui->tableWidget->selectionModel()->currentIndex().row();
+    if(row >= 0 && col >= 0)
+    {
+        if(key == Qt::Key_Right)
+            event_mmpi2_set_cell(row, col, true);
+        else if(key == Qt::Key_Left)
+            event_mmpi2_set_cell(row, col, false);
+    }
 }
