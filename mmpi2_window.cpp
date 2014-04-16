@@ -89,7 +89,7 @@ void MainWindow::event_mmpi2_set_cell(int row, int column, bool v)
 
     if(mmpi2_test_completed_check(column))
     {
-        ui->tabWidget_2->setCurrentIndex(1);
+        //ui->tabWidget_2->setCurrentIndex(1);
 
     }
 }
