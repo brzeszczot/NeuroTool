@@ -9,7 +9,7 @@ void MainWindow::prepareMMPI2Table()
 {
     ui->tableWidget->setRowCount(MMPI2::Q_QUESTIONS);
     ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
-    ui->tableWidget->setColumnWidth(0, 30);
+    ui->tableWidget->setColumnWidth(0, 50);
 //    QRegExp rx("[0-9]");
 //    QValidator *validator = new QRegExpValidator(rx, this);
 
