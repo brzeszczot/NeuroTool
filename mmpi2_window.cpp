@@ -2,7 +2,28 @@
 
 void MainWindow::prepareMMPI2ResultTab()
 {
+                                         // scales + (trin, vrin)
+    ui->tableWidget_2->setRowCount(MMPI2::Q_SCALES + 2);
+    ui->tableWidget_2->horizontalHeader()->setStretchLastSection(true);
 
+    int ii;
+    QTableWidgetItem *newItem;
+    for(ii = 0; ii < MMPI2::Q_SCALES; ii++)
+    {
+        newItem = new QTableWidgetItem(QString::fromStdString(MMPI2::scales_names[ii]));
+        ui->tableWidget_2->setItem(ii, 1, newItem);
+
+   //     ui->tableWidget_2->item(ii,0)->setTextAlignment(Qt::AlignCenter);
+        ui->tableWidget_2->item(ii,1)->setFlags(Qt::ItemIsDragEnabled);
+    }
+
+    newItem = new QTableWidgetItem(QString::fromStdString(MMPI2::trin_name));
+    ui->tableWidget_2->setItem(ii, 1, newItem);
+    ui->tableWidget_2->item(ii,1)->setFlags(Qt::ItemIsDragEnabled);
+    ii++;
+    newItem = new QTableWidgetItem(QString::fromStdString(MMPI2::vrin_name));
+    ui->tableWidget_2->setItem(ii, 1, newItem);
+    ui->tableWidget_2->item(ii,1)->setFlags(Qt::ItemIsDragEnabled);
 }
 
 void MainWindow::prepareMMPI2Table()

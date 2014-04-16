@@ -102,6 +102,25 @@
            <attribute name="title">
             <string>Wyniki</string>
            </attribute>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QTableWidget" name="tableWidget_2">
+              <attribute name="verticalHeaderVisible">
+               <bool>false</bool>
+              </attribute>
+              <column>
+               <property name="text">
+                <string>Wynik</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Nazwa skali</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </widget>
         </item>

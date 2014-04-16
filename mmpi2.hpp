@@ -106,6 +106,9 @@ namespace MMPI2
         {9,56}, {75,303}, {265,353}, {405,444}, {49,167}, {165,472}, {273,561}, {73,239}, {262,275}, {306,383}
     };
 
+    const std::string trin_name = "TRIN - Skala Niespójności Odpowiedzi Zgodnych";
+    const std::string vrin_name = "VRIN - Skala Niespójności Odpowiedzi Niezgodnych";
+
     const std::string scales_names[Q_SCALES] =
     {
         "F - Skala Odpowiedzi Rzadkich",

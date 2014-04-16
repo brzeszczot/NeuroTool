@@ -29,6 +29,7 @@ void MainWindow::setUpWidgets()
     ui->tabWidget->setTabText(1, QString::fromStdString(TAB_NAMES[EMPTY]));
 
     prepareMMPI2Table();
+    prepareMMPI2ResultTab();
 }
 
 void MainWindow::createActions()
