@@ -8,6 +8,7 @@ namespace MMPI2
     enum Q_VAR
     {
         Q_QUESTIONS = 567,  // 567
+        Q_K         = 31,
         Q_SCALES    = 18,
         Q_VRIN      = 67,
         Q_TRIN1     = 13,
@@ -24,10 +25,23 @@ namespace MMPI2
         public:
             Calc();
             virtual ~Calc();
+            void update();
             bool raw_answers[Q_QUESTIONS];
             int scales_result[Q_SCALES];
             int trin_result;
             int vrin_result;
+        private:
+            void reset_arrays();
+    };
+
+    const unsigned short int m_k[Q_K][4] =
+    {
+        {30,15,12,6},{29,15,12,6},{28,14,11,6},{27,14,11,5},{26,13,10,5},
+        {25,13,10,5},{24,12,10,5},{23,12,9,5},{22,11,9,4},{21,11,8,4},
+        {20,10,8,4},{19,10,8,4},{18,9,7,4},{17,9,7,3},{16,8,6,3},
+        {15,8,6,3},{14,7,6,3},{13,7,5,3},{12,6,5,2},{11,6,4,2},
+        {10,5,4,2},{9,5,4,2},{8,4,3,2},{7,4,3,1},{6,3,2,1},
+        {5,3,2,1},{4,2,2,1},{3,2,1,1},{2,1,1,0},{1,1,0,0},{0,0,0,0}
     };
 
     // [2]: 0 - PRAWDA, 1 - FAŁSZ
@@ -121,17 +135,17 @@ namespace MMPI2
         "L - Skala Kłamstwa",
         "K - Skala Korekcyjna",
         "S - Skala Pozytywnej Autoprezentacji",
-        "Hs - Skala Hipochondrii",
-        "D - Skala Depresji",
-        "Hy - Skala Histerii",
-        "Pd - Skala Odchyleń Psychopatycznych",
-        "Mf-m - Skala Męskości-Kobiecości (Mężczyźni)",
-        "Mf-f - Skala Męskości-Kobiecości (Kobiety)",
-        "Pa - Skala Paranoi",
-        "Pt - Skala Psychastenii",
-        "Sc - Skala schizofrenii",
-        "Ma - Skala Hipomanii",
-        "Si - Skala Introwersji Społecznej"
+        "1 Hs - Skala Hipochondrii",
+        "2 D - Skala Depresji",
+        "3 Hy - Skala Histerii",
+        "4 Pd - Skala Odchyleń Psychopatycznych",
+        "5 Mf-m - Skala Męskości-Kobiecości (Mężczyźni)",
+        "5 Mf-f - Skala Męskości-Kobiecości (Kobiety)",
+        "6 Pa - Skala Paranoi",
+        "7 Pt - Skala Psychastenii",
+        "8 Sc - Skala schizofrenii",
+        "9 Ma - Skala Hipomanii",
+        "10 Si - Skala Introwersji Społecznej"
     };
 
     const std::string questions[Q_QUESTIONS] =

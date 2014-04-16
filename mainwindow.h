@@ -10,6 +10,7 @@
 #include <QHeaderView>
 #include <QMessageBox>
 #include <QKeyEvent>
+#include <QtDebug>
 //#include <QRegExpValidator>
 //#include <QSettings>
 
@@ -17,6 +18,7 @@
 #include "ui_mainwindow.h"
 #include "mmpi2.hpp"
 
+#define MMPI2_RESULT_TAB_MOV    2
 const std::string TAB_NAMES[2] = {"MMPI-2", "..."};
 
 namespace Ui
@@ -47,6 +49,8 @@ class MainWindow: public QMainWindow
         void event_mmpi2_new(int key);
         void event_mmpi2_set_cell(int row, int column, bool v);
         bool mmpi2_test_completed_check(int column);
+        void mmpi2_update_result_tab();
+
         Ui::MainWindow *ui;
         QAction *act_about;
         QMenu *menu_program;

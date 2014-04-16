@@ -2,28 +2,41 @@
 
 void MainWindow::prepareMMPI2ResultTab()
 {
-                                         // scales + (trin, vrin)
+    // 2 rows indepeendent and rest taken from array dynamicly
+    // scales + (trin, vrin)
     ui->tableWidget_2->setRowCount(MMPI2::Q_SCALES + 2);
     ui->tableWidget_2->horizontalHeader()->setStretchLastSection(true);
 
-    int ii;
     QTableWidgetItem *newItem;
-    for(ii = 0; ii < MMPI2::Q_SCALES; ii++)
-    {
-        newItem = new QTableWidgetItem(QString::fromStdString(MMPI2::scales_names[ii]));
-        ui->tableWidget_2->setItem(ii, 1, newItem);
-
-   //     ui->tableWidget_2->item(ii,0)->setTextAlignment(Qt::AlignCenter);
-        ui->tableWidget_2->item(ii,1)->setFlags(Qt::ItemIsDragEnabled);
-    }
 
     newItem = new QTableWidgetItem(QString::fromStdString(MMPI2::trin_name));
-    ui->tableWidget_2->setItem(ii, 1, newItem);
-    ui->tableWidget_2->item(ii,1)->setFlags(Qt::ItemIsDragEnabled);
-    ii++;
+    ui->tableWidget_2->setItem(0, 2, newItem);
+    ui->tableWidget_2->item(0,2)->setFlags(Qt::ItemIsDragEnabled);
+    newItem = new QTableWidgetItem("");
+    ui->tableWidget_2->setItem(0, 0, newItem);
+    newItem = new QTableWidgetItem("");
+    ui->tableWidget_2->setItem(0, 1, newItem);
+
     newItem = new QTableWidgetItem(QString::fromStdString(MMPI2::vrin_name));
-    ui->tableWidget_2->setItem(ii, 1, newItem);
-    ui->tableWidget_2->item(ii,1)->setFlags(Qt::ItemIsDragEnabled);
+    ui->tableWidget_2->setItem(1, 2, newItem);
+    ui->tableWidget_2->item(1,2)->setFlags(Qt::ItemIsDragEnabled);
+    newItem = new QTableWidgetItem("");
+    ui->tableWidget_2->setItem(1, 0, newItem);
+    newItem = new QTableWidgetItem("");
+    ui->tableWidget_2->setItem(1, 1, newItem);
+
+    for(int ii = MMPI2_RESULT_TAB_MOV; ii < MMPI2::Q_SCALES + MMPI2_RESULT_TAB_MOV; ii++)
+    {
+        newItem = new QTableWidgetItem("");
+        ui->tableWidget_2->setItem(ii, 0, newItem);
+        newItem = new QTableWidgetItem("");
+        ui->tableWidget_2->setItem(ii, 1, newItem);
+
+        newItem = new QTableWidgetItem(QString::fromStdString(MMPI2::scales_names[ii - MMPI2_RESULT_TAB_MOV]));
+        ui->tableWidget_2->setItem(ii, 2, newItem);
+
+        ui->tableWidget_2->item(ii,2)->setFlags(Qt::ItemIsDragEnabled);
+    }
 }
 
 void MainWindow::prepareMMPI2Table()
@@ -87,10 +100,30 @@ void MainWindow::event_mmpi2_set_cell(int row, int column, bool v)
         ui->tableWidget->setCurrentIndex(next_cell);
     }
 
+    mmpi2->update();
+    mmpi2_update_result_tab();
+
     if(mmpi2_test_completed_check(column))
     {
         //ui->tabWidget_2->setCurrentIndex(1);
 
+    }
+    //qDebug() << m_scales[scale][0][nr] << ", ";
+}
+
+void MainWindow::mmpi2_update_result_tab()
+{
+    QTableWidgetItem *selected_item;
+
+    selected_item = ui->tableWidget_2->item(0, 0);
+    selected_item->setText(QString::number(mmpi2->trin_result));
+    selected_item = ui->tableWidget_2->item(1, 0);
+    selected_item->setText(QString::number(mmpi2->vrin_result));
+
+    for(int row = MMPI2_RESULT_TAB_MOV; row < MMPI2::Q_SCALES + MMPI2_RESULT_TAB_MOV; row++)
+    {
+        selected_item = ui->tableWidget_2->item(row, 0);
+        selected_item->setText(QString::number(mmpi2->scales_result[row - MMPI2_RESULT_TAB_MOV]));
     }
 }
 
@@ -118,8 +151,8 @@ void MainWindow::event_mmpi2_new(int key)
     if(row >= 0 && col >= 0)
     {
         if(key == Qt::Key_Right)
-            event_mmpi2_set_cell(row, col, true);
-        else if(key == Qt::Key_Left)
             event_mmpi2_set_cell(row, col, false);
+        else if(key == Qt::Key_Left)
+            event_mmpi2_set_cell(row, col, true);
     }
 }
