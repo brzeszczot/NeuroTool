@@ -25,6 +25,9 @@ namespace MMPI2
             Calc();
             virtual ~Calc();
             bool raw_answers[Q_QUESTIONS];
+            int scales_result[Q_SCALES];
+            int trin_result;
+            int vrin_result;
     };
 
     // [2]: 0 - PRAWDA, 1 - FAŁSZ
