@@ -8,7 +8,7 @@ namespace MMPI2
     enum Q_VAR
     {
         Q_QUESTIONS = 567,  // 567
-        Q_SCALES    = 18,  // ???
+        Q_SCALES    = 18,
         Q_VRIN      = 67,
         Q_TRIN1     = 13,
         Q_TRIN2     = 10,

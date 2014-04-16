@@ -33,6 +33,7 @@ ui->tableWidget->setCellWidget(rowCount, column, checkBox);
        // ui->tableWidget->item(ii,1)->setValidator(validator);
         ui->tableWidget->item(ii,0)->setTextAlignment(Qt::AlignCenter);
         ui->tableWidget->item(ii,0)->setFlags(Qt::ItemIsDragEnabled);
+        ui->tableWidget->item(ii,1)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
         ui->tableWidget->item(ii,2)->setFlags(Qt::ItemIsDragEnabled);
     }
    // QTableWidgetItem *a = ui->tableWidget->item(5,1);
