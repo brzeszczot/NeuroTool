@@ -712,7 +712,7 @@ namespace MMPI2
         "Jestem zadowolony/zadowolona z tego, ile zarabiam.",
         "Zazwyczaj mam dość energii, by wykonać swoją pracę.",
         "Trudno jest mi przyjmować komplementy.",
-        " W większości małżeństw co najmniej jedno z partnerów jest nieszczęśliwe.",
+        "W większości małżeństw co najmniej jedno z partnerów jest nieszczęśliwe.",
         "Prawie nigdy nie tracę samokontroli.",
         "Ostatnio wiele wysiłku kosztuje mnie zapamiętanie tego, co ktoś do mnie mówi.",
         "Tym co cierpi, kiedy jestem smutny/smutna lub przygnębiony/przygnębiona, jest moja praca.",

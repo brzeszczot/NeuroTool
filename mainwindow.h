@@ -17,9 +17,10 @@
 #include "boost/regex.hpp"
 #include "ui_mainwindow.h"
 #include "mmpi2.hpp"
+#include "waisr.hpp"
 
 #define MMPI2_RESULT_TAB_MOV    2
-const std::string TAB_NAMES[2] = {"MMPI-2", "..."};
+const std::string TAB_NAMES[2] = {"MMPI-2", "WAIS-R"};
 
 namespace Ui
 {
@@ -33,7 +34,7 @@ class MainWindow: public QMainWindow
     Q_OBJECT
     public:
         // must ovelap with TAB_NAMES array
-        enum TABS {MMPI2, EMPTY};
+        enum TABS {MMPI2, WAISR};
         explicit MainWindow(QWidget *parent = 0);
         ~MainWindow();
     private slots:

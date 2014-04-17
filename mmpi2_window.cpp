@@ -6,35 +6,50 @@ void MainWindow::prepareMMPI2ResultTab()
     // scales + (trin, vrin)
     ui->tableWidget_2->setRowCount(MMPI2::Q_SCALES + 2);
     ui->tableWidget_2->horizontalHeader()->setStretchLastSection(true);
+    ui->tableWidget_2->verticalHeader()->setVisible(false);
+    ui->tableWidget_2->horizontalHeader()->setVisible(true);
 
     QTableWidgetItem *newItem;
 
+    // trin row
     newItem = new QTableWidgetItem(QString::fromStdString(MMPI2::trin_name));
     ui->tableWidget_2->setItem(0, 2, newItem);
     ui->tableWidget_2->item(0,2)->setFlags(Qt::ItemIsDragEnabled);
     newItem = new QTableWidgetItem("");
     ui->tableWidget_2->setItem(0, 0, newItem);
+    ui->tableWidget_2->item(0,0)->setFlags(Qt::ItemIsDragEnabled);
+    ui->tableWidget_2->item(0,0)->setTextAlignment(Qt::AlignCenter);
     newItem = new QTableWidgetItem("");
     ui->tableWidget_2->setItem(0, 1, newItem);
+    ui->tableWidget_2->item(0,1)->setFlags(Qt::ItemIsDragEnabled);
+    ui->tableWidget_2->item(0,1)->setTextAlignment(Qt::AlignCenter);
 
+    // vrin row
     newItem = new QTableWidgetItem(QString::fromStdString(MMPI2::vrin_name));
     ui->tableWidget_2->setItem(1, 2, newItem);
     ui->tableWidget_2->item(1,2)->setFlags(Qt::ItemIsDragEnabled);
     newItem = new QTableWidgetItem("");
     ui->tableWidget_2->setItem(1, 0, newItem);
+    ui->tableWidget_2->item(1,0)->setFlags(Qt::ItemIsDragEnabled);
+    ui->tableWidget_2->item(1,0)->setTextAlignment(Qt::AlignCenter);
     newItem = new QTableWidgetItem("");
     ui->tableWidget_2->setItem(1, 1, newItem);
+    ui->tableWidget_2->item(1,1)->setFlags(Qt::ItemIsDragEnabled);
+    ui->tableWidget_2->item(1,1)->setTextAlignment(Qt::AlignCenter);
 
+    // scales rows
     for(int ii = MMPI2_RESULT_TAB_MOV; ii < MMPI2::Q_SCALES + MMPI2_RESULT_TAB_MOV; ii++)
     {
         newItem = new QTableWidgetItem("");
         ui->tableWidget_2->setItem(ii, 0, newItem);
+        ui->tableWidget_2->item(ii,0)->setFlags(Qt::ItemIsDragEnabled);
+        ui->tableWidget_2->item(ii,0)->setTextAlignment(Qt::AlignCenter);
         newItem = new QTableWidgetItem("");
         ui->tableWidget_2->setItem(ii, 1, newItem);
-
+        ui->tableWidget_2->item(ii,1)->setFlags(Qt::ItemIsDragEnabled);
+        ui->tableWidget_2->item(ii,1)->setTextAlignment(Qt::AlignCenter);
         newItem = new QTableWidgetItem(QString::fromStdString(MMPI2::scales_names[ii - MMPI2_RESULT_TAB_MOV]));
         ui->tableWidget_2->setItem(ii, 2, newItem);
-
         ui->tableWidget_2->item(ii,2)->setFlags(Qt::ItemIsDragEnabled);
     }
 }
@@ -43,6 +58,8 @@ void MainWindow::prepareMMPI2Table()
 {
     ui->tableWidget->setRowCount(MMPI2::Q_QUESTIONS);
     ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
+    ui->tableWidget->verticalHeader()->setVisible(false);
+    ui->tableWidget->horizontalHeader()->setVisible(true);
     ui->tableWidget->setColumnWidth(0, 50);
 //    QRegExp rx("[0-9]");
 //    QValidator *validator = new QRegExpValidator(rx, this);

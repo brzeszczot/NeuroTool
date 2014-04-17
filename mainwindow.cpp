@@ -8,6 +8,14 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     createActions();
     createMenus();
 
+    short int wp[WP1] = {10,15,3,34,11,7,27,7,23,34,12};
+    short int *wpx;
+    wpx = WAISR::Calculate2(wp);
+
+    qDebug() << wpx[0] << ", ";
+    qDebug() << wpx[1] << ", ";
+    qDebug() << wpx[2] << ", ";
+    qDebug() << wpx[3] << ", ";
     //statusBar()->showMessage(tr("Program gotowy do pracy..."));
     //if(regex_match(selected_item->text().toStdString().c_str(), reg_matches, reg_true))
     // this->setWindowTitle(QString::fromStdString(program_full_name));
@@ -24,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 void MainWindow::setUpWidgets()
 {
     ui->tabWidget->setTabText(0, QString::fromStdString(TAB_NAMES[MMPI2]));
-    ui->tabWidget->setTabText(1, QString::fromStdString(TAB_NAMES[EMPTY]));
+    ui->tabWidget->setTabText(1, QString::fromStdString(TAB_NAMES[WAISR]));
 
     prepareMMPI2Table();
     prepareMMPI2ResultTab();

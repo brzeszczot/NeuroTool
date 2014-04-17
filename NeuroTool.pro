@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     mmpi2.cpp \
-    mmpi2_window.cpp
+    mmpi2_window.cpp \
+    waisr.cpp
 
 HEADERS  += mainwindow.h \
     mmpi2.hpp \
-    _draft.hpp
+    _draft.hpp \
+    waisr.hpp
 
 FORMS    += mainwindow.ui
 
