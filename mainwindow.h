@@ -39,6 +39,10 @@ class MainWindow: public QMainWindow
         ~MainWindow();
     private slots:
         void about();
+        void mmpi2_tab_was_changed();
+        void mmpi2_test_true_button_pressed();
+        void mmpi2_test_false_button_pressed();
+        void mmpi2_test_next_button_pressed();
     private:
         void keyPressEvent(QKeyEvent*);
         void setUpWidgets();
@@ -51,11 +55,13 @@ class MainWindow: public QMainWindow
         void event_mmpi2_set_cell(int row, int column, bool v);
         bool mmpi2_test_completed_check(int column);
         void mmpi2_update_result_tab();
+        void mmpi2_reset_table();
 
         Ui::MainWindow *ui;
         QAction *act_about;
         QMenu *menu_program;
         MMPI2::Calc *mmpi2;
+        int mmpi2_current_test_question;
         boost::cmatch reg_matches;
 };
 

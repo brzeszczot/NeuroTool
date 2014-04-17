@@ -8,14 +8,15 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     createActions();
     createMenus();
 
-    short int wp[WP1] = {10,15,3,34,11,7,27,7,23,34,12};
+    // waisr stuff....
+    short int wp[WAISR::WP1] = {10,15,3,34,11,7,27,7,23,34,12};
     short int *wpx;
-    wpx = WAISR::Calculate2(wp);
+    // return 11 values
+    wpx = WAISR::Calculate(wp,30);
+    // return 6 values
+    wpx = WAISR::Calculate2(wpx);
+    //qDebug() << wpx[0] << ", ";
 
-    qDebug() << wpx[0] << ", ";
-    qDebug() << wpx[1] << ", ";
-    qDebug() << wpx[2] << ", ";
-    qDebug() << wpx[3] << ", ";
     //statusBar()->showMessage(tr("Program gotowy do pracy..."));
     //if(regex_match(selected_item->text().toStdString().c_str(), reg_matches, reg_true))
     // this->setWindowTitle(QString::fromStdString(program_full_name));
@@ -29,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     */
 }
 
+// prepare all widgets
 void MainWindow::setUpWidgets()
 {
     ui->tabWidget->setTabText(0, QString::fromStdString(TAB_NAMES[MMPI2]));
@@ -38,14 +40,19 @@ void MainWindow::setUpWidgets()
     prepareMMPI2ResultTab();
 }
 
+// prepare all events connections (SIGNAL -> SLOT)
 void MainWindow::createActions()
 {
     act_about = new QAction(tr("&O programie..."), this);
     connect(act_about, SIGNAL(triggered()), this, SLOT(about()));
 
-    //connect(ui->tableWidget, SIGNAL(cellChanged(int, int)), this, SLOT(event_table_mmpi2_cell_changed(int,int)));
+    connect(ui->tabWidget_2, SIGNAL(currentChanged(int)), this, SLOT(mmpi2_tab_was_changed()));
+    connect(ui->pushButton_3, SIGNAL(clicked()), this, SLOT(mmpi2_test_true_button_pressed()));
+    connect(ui->pushButton_4, SIGNAL(clicked()), this, SLOT(mmpi2_test_false_button_pressed()));
+    connect(ui->pushButton_5, SIGNAL(clicked()), this, SLOT(mmpi2_test_next_button_pressed()));
 }
 
+// create menu
 void MainWindow::createMenus()
 {
     act_about->setMenuRole(QAction::AboutRole);
@@ -59,6 +66,7 @@ void MainWindow::about()
     QMessageBox::about(this, tr("O programie..."), tr("brzeszczot@gmail.com"));
 }
 
+// handle key events
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     switch(ui->tabWidget->currentIndex())

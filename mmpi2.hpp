@@ -30,7 +30,6 @@ namespace MMPI2
             int scales_result[Q_SCALES];
             int trin_result;
             int vrin_result;
-        private:
             void reset_arrays();
     };
 

@@ -1,18 +1,19 @@
 #ifndef WAIS_HPP_INCLUDED
 #define WAIS_HPP_INCLUDED
 
-#define AGE_SCOPE 10
-#define WP2 19
-#define WP1 11
-#define SCOPE 2
-
-#define GROUP 4
-#define IQ_POINTS 121
-#define WC_POINTS 111
-#define WC_RES 6
-
 namespace WAISR
 {
+    enum Q_VAL
+    {
+        AGE_SCOPE   = 10,
+        WP2         = 19,
+        WP1         = 11,
+        SCOPE       = 2,
+        GROUP       = 4,
+        IQ_POINTS   = 121,
+        WC_POINTS   = 111,
+        WC_RES      = 6
+    };
 
     short int* Calculate(short int wp1[WP1], int age);
     short int* Calculate2(short int wp[WP1]);

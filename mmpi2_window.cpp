@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 
+// prepare table with calculated results
 void MainWindow::prepareMMPI2ResultTab()
 {
     // 2 rows indepeendent and rest taken from array dynamicly
@@ -54,6 +55,7 @@ void MainWindow::prepareMMPI2ResultTab()
     }
 }
 
+// prepare table with inputs data
 void MainWindow::prepareMMPI2Table()
 {
     ui->tableWidget->setRowCount(MMPI2::Q_QUESTIONS);
@@ -94,6 +96,7 @@ ui->tableWidget->setCellWidget(rowCount, column, checkBox);
     mmpi2 = new MMPI2::Calc();
 }
 
+// one of table cell was selected (set TRUE or FALSE depends on user selection "bool v")
 void MainWindow::event_mmpi2_set_cell(int row, int column, bool v)
 {
     mmpi2->raw_answers[row] = v;
@@ -123,11 +126,22 @@ void MainWindow::event_mmpi2_set_cell(int row, int column, bool v)
     if(mmpi2_test_completed_check(column))
     {
         //ui->tabWidget_2->setCurrentIndex(1);
-
     }
-    //qDebug() << m_scales[scale][0][nr] << ", ";
 }
 
+// reset colour and text for all cells in main inputs table
+void MainWindow::mmpi2_reset_table()
+{
+    ui->tableWidget->selectionModel()->clearSelection();
+    for(int row = 0; row < ui->tableWidget->rowCount(); row++)
+    {
+        QTableWidgetItem *selected_item = ui->tableWidget->item(row, 1);
+        selected_item->setText("");
+        selected_item->setBackground(Qt::white);
+    }
+}
+
+// update data inside results table depends on MMPI-2 calculated data
 void MainWindow::mmpi2_update_result_tab()
 {
     QTableWidgetItem *selected_item;
@@ -144,6 +158,7 @@ void MainWindow::mmpi2_update_result_tab()
     }
 }
 
+// check if user provide all TRUE / FALSE values into input table
 bool MainWindow::mmpi2_test_completed_check(int column)
 {
     int cc = 0;
@@ -159,6 +174,7 @@ bool MainWindow::mmpi2_test_completed_check(int column)
     return false;
 }
 
+// check which one buton was pressed (left arrow/right arrow)
 void MainWindow::event_mmpi2_new(int key)
 {
     // handle events on mmpi2 table (Right key = true, Left key = false)
@@ -172,4 +188,98 @@ void MainWindow::event_mmpi2_new(int key)
         else if(key == Qt::Key_Left)
             event_mmpi2_set_cell(row, col, true);
     }
+}
+
+// user changed tab - if "new test" tab was selected ask question "start test or not"
+void MainWindow::mmpi2_tab_was_changed()
+{
+    if(ui->tabWidget_2->currentIndex() == 2)
+    {
+        // display first question
+        ui->label->setText("Zapraszam do testu.");
+
+        // ask question
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, "NeuroTool", "Czy chcesz rozpocząć nowy test?", QMessageBox::Yes | QMessageBox::No);
+        if (reply == QMessageBox::Yes)
+        {
+            mmpi2_current_test_question = 0;    // (0) set question number one
+            mmpi2->reset_arrays();
+            mmpi2_update_result_tab();
+            mmpi2_reset_table();
+
+            ui->label->setText(QString::fromStdString(MMPI2::questions[mmpi2_current_test_question]));
+            ui->progressBar->setValue(0);
+            ui->pushButton_3->setEnabled(true);
+            ui->pushButton_4->setEnabled(true);
+            ui->pushButton_5->setEnabled(false);
+            ui->pushButton_3->setFlat(false);
+            ui->pushButton_4->setFlat(false);
+            statusBar()->showMessage(tr(""));
+        }
+        else
+            ui->tabWidget_2->setCurrentIndex(0);
+    }
+}
+
+// true button pressed
+void MainWindow::mmpi2_test_true_button_pressed()
+{
+    mmpi2->raw_answers[mmpi2_current_test_question] = true;
+    ui->pushButton_3->setFlat(true);
+    ui->pushButton_4->setFlat(false);
+    ui->pushButton_5->setEnabled(true);
+    statusBar()->showMessage(tr("Wybrano: PRAWDA"));
+}
+
+// false button pressed
+void MainWindow::mmpi2_test_false_button_pressed()
+{
+    mmpi2->raw_answers[mmpi2_current_test_question] = false;
+    ui->pushButton_3->setFlat(false);
+    ui->pushButton_4->setFlat(true);
+    ui->pushButton_5->setEnabled(true);
+    statusBar()->showMessage(tr("Wybrano: FAŁSZ"));
+}
+
+// next question button pressed
+void MainWindow::mmpi2_test_next_button_pressed()
+{
+    // update calculations
+    mmpi2->update();
+    mmpi2_update_result_tab();
+
+    // update main input tab (colour and text)
+    QTableWidgetItem *selected_item = ui->tableWidget->item(mmpi2_current_test_question, 1);
+    if(mmpi2->raw_answers[mmpi2_current_test_question])
+    {
+        selected_item->setText(TRUE_NAME);
+        selected_item->setBackground(Qt::green);
+    }
+    else
+    {
+        selected_item->setText(FALSE_NAME);
+        selected_item->setBackground(Qt::red);
+    }
+
+    // select next question
+    mmpi2_current_test_question++;
+
+    // update progressbar
+    ui->progressBar->setValue(floor((mmpi2_current_test_question * 100) / MMPI2::Q_QUESTIONS));
+
+    // if test ends - move to results tab
+    if(mmpi2_current_test_question >= MMPI2::Q_QUESTIONS)
+    {
+        ui->label->setText("Koniec testu. Dziękuję.");
+        ui->pushButton_3->setEnabled(false);
+        ui->pushButton_4->setEnabled(false);
+    }
+    else
+        ui->label->setText(QString::fromStdString(MMPI2::questions[mmpi2_current_test_question]));
+
+    ui->pushButton_3->setFlat(false);
+    ui->pushButton_4->setFlat(false);
+    ui->pushButton_5->setEnabled(false);
+    statusBar()->showMessage(tr(""));
 }
