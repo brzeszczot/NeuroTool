@@ -199,8 +199,14 @@ void MainWindow::mmpi2_tab_was_changed()
         ui->label->setText("Zapraszam do testu.");
 
         // ask question
-        QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(this, "NeuroTool", "Czy chcesz rozpocząć nowy test?", QMessageBox::Yes | QMessageBox::No);
+        QMessageBox box;
+        box.addButton(QMessageBox::Yes);
+        box.addButton(QMessageBox::No);
+        box.setText("Czy chcesz rozpocząć nowy test?");
+        box.button(QMessageBox::Yes)->setText("Tak");
+        box.button(QMessageBox::No)->setText("Nie");
+        int reply = box.exec();
+
         if (reply == QMessageBox::Yes)
         {
             mmpi2_current_test_question = 0;    // (0) set question number one
@@ -213,8 +219,6 @@ void MainWindow::mmpi2_tab_was_changed()
             ui->pushButton_3->setEnabled(true);
             ui->pushButton_4->setEnabled(true);
             ui->pushButton_5->setEnabled(false);
-            ui->pushButton_3->setFlat(false);
-            ui->pushButton_4->setFlat(false);
             statusBar()->showMessage(tr(""));
         }
         else
@@ -226,8 +230,8 @@ void MainWindow::mmpi2_tab_was_changed()
 void MainWindow::mmpi2_test_true_button_pressed()
 {
     mmpi2->raw_answers[mmpi2_current_test_question] = true;
-    ui->pushButton_3->setFlat(true);
-    ui->pushButton_4->setFlat(false);
+    ui->pushButton_3->setStyleSheet("background-color: green");
+    ui->pushButton_4->setStyleSheet("background-color: none");
     ui->pushButton_5->setEnabled(true);
     statusBar()->showMessage(tr("Wybrano: PRAWDA"));
 }
@@ -236,8 +240,8 @@ void MainWindow::mmpi2_test_true_button_pressed()
 void MainWindow::mmpi2_test_false_button_pressed()
 {
     mmpi2->raw_answers[mmpi2_current_test_question] = false;
-    ui->pushButton_3->setFlat(false);
-    ui->pushButton_4->setFlat(true);
+    ui->pushButton_4->setStyleSheet("background-color: green");
+    ui->pushButton_3->setStyleSheet("background-color: none");
     ui->pushButton_5->setEnabled(true);
     statusBar()->showMessage(tr("Wybrano: FAŁSZ"));
 }
@@ -278,8 +282,8 @@ void MainWindow::mmpi2_test_next_button_pressed()
     else
         ui->label->setText(QString::fromStdString(MMPI2::questions[mmpi2_current_test_question]));
 
-    ui->pushButton_3->setFlat(false);
-    ui->pushButton_4->setFlat(false);
+    ui->pushButton_3->setStyleSheet("background-color: none");
+    ui->pushButton_4->setStyleSheet("background-color: none");
     ui->pushButton_5->setEnabled(false);
     statusBar()->showMessage(tr(""));
 }

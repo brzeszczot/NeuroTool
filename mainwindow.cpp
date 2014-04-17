@@ -35,6 +35,8 @@ void MainWindow::setUpWidgets()
 {
     ui->tabWidget->setTabText(0, QString::fromStdString(TAB_NAMES[MMPI2]));
     ui->tabWidget->setTabText(1, QString::fromStdString(TAB_NAMES[WAISR]));
+    ui->pushButton_3->setText(TRUE_NAME);
+    ui->pushButton_4->setText(FALSE_NAME);
 
     prepareMMPI2Table();
     prepareMMPI2ResultTab();
