@@ -30,7 +30,7 @@ macx:ICON = $${PWD}/ico.icns
 macx:QMAKE_INFO_PLIST = info.plist
 macx:OTHER_FILES += info.plist
 
-win32:RC_FILE = myapp.rc
+win32:RC_FILE = app.rc
 
 
 macx:INCLUDEPATH += /opt/local/include
