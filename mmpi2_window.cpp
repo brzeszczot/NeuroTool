@@ -1,5 +1,16 @@
 #include "mainwindow.h"
 
+// prepare general settings for mmpi2 tab
+void MainWindow::prepare_mmpi2_general_tab()
+{
+    ui->pushButton_3->setText(TRUE_NAME);
+    ui->pushButton_4->setText(FALSE_NAME);
+    mmpi2_current_test_question = 0;
+
+    prepareMMPI2Table();
+    prepareMMPI2ResultTab();
+}
+
 // prepare table with calculated results
 void MainWindow::prepareMMPI2ResultTab()
 {
@@ -209,35 +220,39 @@ void MainWindow::mmpi2_tab_was_changed()
 {
     if(ui->tabWidget_2->currentIndex() == 2)
     {
-        // display first question
-        ui->label->setText("Zapraszam do testu.");
+        // set widgets for test
+        mmpi2_set_question_and_statusbar();
+        ui->pushButton_3->setEnabled(true);
+        ui->pushButton_4->setEnabled(true);
+        ui->pushButton_5->setEnabled(false);
+        ui->pushButton_3->setStyleSheet("background-color: none");
+        ui->pushButton_4->setStyleSheet("background-color: none");
 
         // ask question
         QMessageBox box;
         box.addButton(QMessageBox::Yes);
         box.addButton(QMessageBox::No);
+        if(mmpi2_current_test_question > 0)
+        {
+            box.addButton(QMessageBox::Ok);
+            box.button(QMessageBox::Ok)->setText("Kontynuuj test");
+        }
         box.setText("Czy chcesz rozpocząć nowy test?");
         box.button(QMessageBox::Yes)->setText("Tak");
         box.button(QMessageBox::No)->setText("Nie");
-        int reply = box.exec();
+        int reply = box.exec();       
 
+        // handle question
         if (reply == QMessageBox::Yes)
         {
-            mmpi2_current_test_question = 565;    // (0) set question number one
+            mmpi2_current_test_question = 0;    // (0) set question number one (for debug set 565)
             mmpi2->reset_arrays();
             mmpi2_update_result_tab();
             mmpi2_reset_table();
-
-            ui->label->setText(QString::fromStdString(MMPI2::questions[mmpi2_current_test_question]));
             ui->progressBar->setValue(0);
-            ui->pushButton_3->setEnabled(true);
-            ui->pushButton_4->setEnabled(true);
-            ui->pushButton_5->setEnabled(false);
-            ui->pushButton_3->setStyleSheet("background-color: none");
-            ui->pushButton_4->setStyleSheet("background-color: none");
-            statusBar()->showMessage(tr(""));
+            mmpi2_set_question_and_statusbar();
         }
-        else
+        else if (reply == QMessageBox::No)
             ui->tabWidget_2->setCurrentIndex(0);
     }
 }
@@ -293,14 +308,21 @@ void MainWindow::mmpi2_test_next_button_pressed()
     if(mmpi2_current_test_question >= MMPI2::Q_QUESTIONS)
     {
         ui->label->setText("Koniec testu. Dziękuję.");
+        statusBar()->showMessage("");
         ui->pushButton_3->setEnabled(false);
         ui->pushButton_4->setEnabled(false);
+        mmpi2_current_test_question = 0;
     }
     else
-        ui->label->setText(QString::fromStdString(MMPI2::questions[mmpi2_current_test_question]));
+        mmpi2_set_question_and_statusbar();
 
     ui->pushButton_3->setStyleSheet("background-color: none");
     ui->pushButton_4->setStyleSheet("background-color: none");
     ui->pushButton_5->setEnabled(false);
-    statusBar()->showMessage(tr(""));
+}
+
+void MainWindow::mmpi2_set_question_and_statusbar()
+{
+    statusBar()->showMessage("Pytanie nr " + QString::number(mmpi2_current_test_question + 1) + " z " + QString::number(MMPI2::Q_QUESTIONS));
+    ui->label->setText(QString::number(mmpi2_current_test_question + 1) + ". " + QString::fromStdString(MMPI2::questions[mmpi2_current_test_question]));
 }

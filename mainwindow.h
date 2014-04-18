@@ -49,6 +49,7 @@ class MainWindow: public QMainWindow
         void createActions();
         void createMenus();
         // mmpi2
+        void prepare_mmpi2_general_tab();
         void prepareMMPI2Table();
         void prepareMMPI2ResultTab();
         void event_mmpi2_new(int key);
@@ -56,6 +57,7 @@ class MainWindow: public QMainWindow
         bool mmpi2_test_completed_check(int column);
         void mmpi2_update_result_tab();
         void mmpi2_reset_table();
+        void mmpi2_set_question_and_statusbar();
 
         Ui::MainWindow *ui;
         QAction *act_about;
