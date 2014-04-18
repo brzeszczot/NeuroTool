@@ -178,15 +178,29 @@ bool MainWindow::mmpi2_test_completed_check(int column)
 void MainWindow::event_mmpi2_new(int key)
 {
     // handle events on mmpi2 table (Right key = true, Left key = false)
-    int row, col;
-    col = ui->tableWidget->selectionModel()->currentIndex().column();
-    row = ui->tableWidget->selectionModel()->currentIndex().row();
-    if(row >= 0 && col >= 0)
+    if(ui->tabWidget_2->currentIndex() == 0)
     {
-        if(key == Qt::Key_Right)
-            event_mmpi2_set_cell(row, col, false);
-        else if(key == Qt::Key_Left)
-            event_mmpi2_set_cell(row, col, true);
+        int row, col;
+        col = ui->tableWidget->selectionModel()->currentIndex().column();
+        row = ui->tableWidget->selectionModel()->currentIndex().row();
+        if(row >= 0 && col >= 0)
+        {
+            if(key == Qt::Key_Right)
+                event_mmpi2_set_cell(row, col, false);
+            else if(key == Qt::Key_Left)
+                event_mmpi2_set_cell(row, col, true);
+        }
+    }
+
+    // handle events on mmpi2 test
+    if(ui->tabWidget_2->currentIndex() == 2)
+    {
+        if(key == Qt::Key_Right && ui->pushButton_4->isEnabled())
+            mmpi2_test_false_button_pressed();
+        else if(key == Qt::Key_Left && ui->pushButton_3->isEnabled())
+            mmpi2_test_true_button_pressed();
+        else if(key == Qt::Key_Return && ui->pushButton_5->isEnabled())
+            mmpi2_test_next_button_pressed();
     }
 }
 
@@ -209,7 +223,7 @@ void MainWindow::mmpi2_tab_was_changed()
 
         if (reply == QMessageBox::Yes)
         {
-            mmpi2_current_test_question = 0;    // (0) set question number one
+            mmpi2_current_test_question = 565;    // (0) set question number one
             mmpi2->reset_arrays();
             mmpi2_update_result_tab();
             mmpi2_reset_table();
@@ -219,6 +233,8 @@ void MainWindow::mmpi2_tab_was_changed()
             ui->pushButton_3->setEnabled(true);
             ui->pushButton_4->setEnabled(true);
             ui->pushButton_5->setEnabled(false);
+            ui->pushButton_3->setStyleSheet("background-color: none");
+            ui->pushButton_4->setStyleSheet("background-color: none");
             statusBar()->showMessage(tr(""));
         }
         else
@@ -267,7 +283,8 @@ void MainWindow::mmpi2_test_next_button_pressed()
     }
 
     // select next question
-    mmpi2_current_test_question++;
+    if(mmpi2_current_test_question < MMPI2::Q_QUESTIONS)
+        mmpi2_current_test_question++;
 
     // update progressbar
     ui->progressBar->setValue(floor((mmpi2_current_test_question * 100) / MMPI2::Q_QUESTIONS));
