@@ -21,9 +21,16 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     mmpi2.hpp \
     _draft.hpp \
-    waisr.hpp
+    waisr.hpp \
+    myapp.rc.hpp
 
 FORMS    += mainwindow.ui
+
+macx:ICON = $${PWD}/ico.icns
+macx:QMAKE_INFO_PLIST = info.plist
+macx:OTHER_FILES += info.plist
+
+win32:RC_FILE = myapp.rc
 
 
 macx:INCLUDEPATH += /opt/local/include
@@ -33,3 +40,4 @@ macx:LIBS += -lboost_system-mt -lboost_regex-mt -lboost_filesystem-mt -lboost_th
 win32:INCLUDEPATH += "C:\Qt\Tools\boost_1_55_0"
 win32:LIBS += "C:\Qt\Tools\boost_1_55_0\stage\lib\libboost_regex-mgw48-mt-1_55.a"
 
+# hdiutil create -format UDBZ -quiet -srcfolder NeuroTool.app NeuroTool.dmg

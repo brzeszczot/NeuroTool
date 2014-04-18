@@ -23,11 +23,16 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     // this->setWindowTitle(QString::fromStdString(program_full_name));
     //QSettings settings;
     /*
-#ifdef QT_DEBUG
-  statusBar()->showMessage(tr("DEBUG"));
-#else
-  statusBar()->showMessage(tr("RELEASE"));
-#endif
+    #ifdef QT_DEBUG
+      statusBar()->showMessage(tr("DEBUG"));
+    #else
+      statusBar()->showMessage(tr("RELEASE"));
+    #endif
+    */
+    /*
+    #ifdef Q_OS_MAC
+       this->setWindowIcon(QIcon("ico.icns"));
+    #endif
     */
 }
 
