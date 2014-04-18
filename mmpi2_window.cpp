@@ -131,13 +131,14 @@ void MainWindow::event_mmpi2_set_cell(int row, int column, bool v)
         ui->tableWidget->setCurrentIndex(next_cell);
     }
 
+    // calculate data and update result table
     mmpi2->update();
     mmpi2_update_result_tab();
 
+    /*
     if(mmpi2_test_completed_check(column))
-    {
-        //ui->tabWidget_2->setCurrentIndex(1);
-    }
+        ui->tabWidget_2->setCurrentIndex(1);
+    */
 }
 
 // reset colour and text for all cells in main inputs table
@@ -225,8 +226,8 @@ void MainWindow::mmpi2_tab_was_changed()
         ui->pushButton_3->setEnabled(true);
         ui->pushButton_4->setEnabled(true);
         ui->pushButton_5->setEnabled(false);
-        ui->pushButton_3->setStyleSheet("background-color: none");
-        ui->pushButton_4->setStyleSheet("background-color: none");
+        ui->pushButton_3->setStyleSheet("font: none; text-decoration: none;");
+        ui->pushButton_4->setStyleSheet("font: none; text-decoration: none;");
 
         // ask question
         QMessageBox box;
@@ -249,11 +250,13 @@ void MainWindow::mmpi2_tab_was_changed()
             mmpi2->reset_arrays();
             mmpi2_update_result_tab();
             mmpi2_reset_table();
-            ui->progressBar->setValue(0);
             mmpi2_set_question_and_statusbar();
         }
         else if (reply == QMessageBox::No)
             ui->tabWidget_2->setCurrentIndex(0);
+
+        // update progressbar
+        ui->progressBar->setValue(floor((mmpi2_current_test_question * 100) / MMPI2::Q_QUESTIONS));
     }
 }
 
@@ -261,8 +264,8 @@ void MainWindow::mmpi2_tab_was_changed()
 void MainWindow::mmpi2_test_true_button_pressed()
 {
     mmpi2->raw_answers[mmpi2_current_test_question] = true;
-    ui->pushButton_3->setStyleSheet("background-color: green");
-    ui->pushButton_4->setStyleSheet("background-color: none");
+    ui->pushButton_3->setStyleSheet("font: bold; text-decoration: underline;");
+    ui->pushButton_4->setStyleSheet("font: none; text-decoration: none;");
     ui->pushButton_5->setEnabled(true);
     statusBar()->showMessage(tr("Wybrano: PRAWDA"));
 }
@@ -271,8 +274,8 @@ void MainWindow::mmpi2_test_true_button_pressed()
 void MainWindow::mmpi2_test_false_button_pressed()
 {
     mmpi2->raw_answers[mmpi2_current_test_question] = false;
-    ui->pushButton_4->setStyleSheet("background-color: green");
-    ui->pushButton_3->setStyleSheet("background-color: none");
+    ui->pushButton_4->setStyleSheet("font: bold; text-decoration: underline;");
+    ui->pushButton_3->setStyleSheet("font: none; text-decoration: none;");
     ui->pushButton_5->setEnabled(true);
     statusBar()->showMessage(tr("Wybrano: FAŁSZ"));
 }
@@ -316,11 +319,12 @@ void MainWindow::mmpi2_test_next_button_pressed()
     else
         mmpi2_set_question_and_statusbar();
 
-    ui->pushButton_3->setStyleSheet("background-color: none");
-    ui->pushButton_4->setStyleSheet("background-color: none");
+    ui->pushButton_3->setStyleSheet("font: none; text-decoration: none;");
+    ui->pushButton_4->setStyleSheet("font: none; text-decoration: none;");
     ui->pushButton_5->setEnabled(false);
 }
 
+// set statusbar and proper question
 void MainWindow::mmpi2_set_question_and_statusbar()
 {
     statusBar()->showMessage("Pytanie nr " + QString::number(mmpi2_current_test_question + 1) + " z " + QString::number(MMPI2::Q_QUESTIONS));
