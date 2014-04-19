@@ -21,8 +21,7 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     mmpi2.hpp \
     _draft.hpp \
-    waisr.hpp \
-    myapp.rc.hpp
+    waisr.hpp
 
 FORMS    += mainwindow.ui
 
