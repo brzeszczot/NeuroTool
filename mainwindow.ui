@@ -24,7 +24,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -975,16 +975,16 @@
      <x>0</x>
      <y>0</y>
      <width>730</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
-  <tabstop>tabWidget</tabstop>
-  <tabstop>lineEdit</tabstop>
-  <tabstop>lineEdit_2</tabstop>
+  <tabstop>pushButton_3</tabstop>
+  <tabstop>pushButton_4</tabstop>
+  <tabstop>pushButton_5</tabstop>
   <tabstop>lineEdit_3</tabstop>
   <tabstop>lineEdit_4</tabstop>
   <tabstop>lineEdit_5</tabstop>
@@ -995,12 +995,13 @@
   <tabstop>lineEdit_10</tabstop>
   <tabstop>lineEdit_11</tabstop>
   <tabstop>tabWidget_3</tabstop>
-  <tabstop>pushButton_5</tabstop>
+  <tabstop>lineEdit_2</tabstop>
   <tabstop>tabWidget_2</tabstop>
   <tabstop>tableWidget</tabstop>
   <tabstop>tableWidget_2</tabstop>
-  <tabstop>pushButton_3</tabstop>
-  <tabstop>pushButton_4</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>lineEdit</tabstop>
+  <tabstop>lineEdit_12</tabstop>
  </tabstops>
  <resources/>
  <connections/>

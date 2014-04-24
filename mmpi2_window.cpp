@@ -212,11 +212,11 @@ void MainWindow::event_mmpi2_new(int key)
     // handle events on mmpi2 test
     if(ui->tabWidget_2->currentIndex() == 2)
     {
-        if(key == Qt::Key_Right && ui->pushButton_4->isEnabled())
+        if(key == Qt::Key_Period && ui->pushButton_4->isEnabled())
             mmpi2_test_false_button_pressed();
-        else if(key == Qt::Key_Left && ui->pushButton_3->isEnabled())
+        else if(key == Qt::Key_Comma && ui->pushButton_3->isEnabled())
             mmpi2_test_true_button_pressed();
-        else if(key == Qt::Key_Return && ui->pushButton_5->isEnabled())
+        else if(key == Qt::Key_Space && ui->pushButton_5->isEnabled())
             mmpi2_test_next_button_pressed();
     }
 }
