@@ -3,6 +3,11 @@
 // prepare general settings for mmpi2 tab
 void MainWindow::prepare_mmpi2_general_tab()
 {
+    connect(ui->tabWidget_2, SIGNAL(currentChanged(int)), this, SLOT(mmpi2_tab_was_changed()));
+    connect(ui->pushButton_3, SIGNAL(clicked()), this, SLOT(mmpi2_test_true_button_pressed()));
+    connect(ui->pushButton_4, SIGNAL(clicked()), this, SLOT(mmpi2_test_false_button_pressed()));
+    connect(ui->pushButton_5, SIGNAL(clicked()), this, SLOT(mmpi2_test_next_button_pressed()));
+
     ui->pushButton_3->setText(TRUE_NAME);
     ui->pushButton_4->setText(FALSE_NAME);
     mmpi2_current_test_question = 0;

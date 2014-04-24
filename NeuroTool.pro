@@ -16,7 +16,8 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     mmpi2.cpp \
     mmpi2_window.cpp \
-    waisr.cpp
+    waisr.cpp \
+    waisr_window.cpp
 
 HEADERS  += mainwindow.h \
     mmpi2.hpp \

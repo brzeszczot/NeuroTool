@@ -9,9 +9,10 @@
 #include <QTableWidget>
 #include <QHeaderView>
 #include <QMessageBox>
+#include <QLineEdit>
 #include <QKeyEvent>
 #include <QtDebug>
-//#include <QRegExpValidator>
+#include <QRegExpValidator>
 //#include <QSettings>
 
 #include "boost/regex.hpp"
@@ -39,11 +40,14 @@ class MainWindow: public QMainWindow
         ~MainWindow();
     private slots:
         void about();
+        // mmpi2
         void mmpi2_tab_was_changed();
         void mmpi2_test_true_button_pressed();
         void mmpi2_test_false_button_pressed();
         void mmpi2_test_next_button_pressed();
-    private:
+        //waisr
+        void waisr_text_changed();
+private:
         void keyPressEvent(QKeyEvent*);
         void setUpWidgets();
         void createActions();
@@ -58,6 +62,9 @@ class MainWindow: public QMainWindow
         void mmpi2_update_result_tab();
         void mmpi2_reset_table();
         void mmpi2_set_question_and_statusbar();
+        // waisr
+        void prepare_waisr_general_tab();
+        std::string waisr_check_range(int value);
 
         Ui::MainWindow *ui;
         QAction *act_about;

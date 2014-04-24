@@ -9,15 +9,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     createActions();
     createMenus();
 
-    // waisr stuff....
-    short int wp[WAISR::WP1] = {10,15,3,34,11,7,27,7,23,34,12};
-    short int *wpx;
-    // return 11 values
-    wpx = WAISR::Calculate(wp,30);
-    // return 6 values
-    wpx = WAISR::Calculate2(wpx);
-    //qDebug() << wpx[0] << ", ";
-
     //statusBar()->showMessage(tr("Program gotowy do pracy..."));
     //if(regex_match(selected_item->text().toStdString().c_str(), reg_matches, reg_true))
     // this->setWindowTitle(QString::fromStdString(program_full_name));
@@ -43,6 +34,7 @@ void MainWindow::setUpWidgets()
     ui->tabWidget->setTabText(1, QString::fromStdString(TAB_NAMES[WAISR]));
 
     prepare_mmpi2_general_tab();
+    prepare_waisr_general_tab();
 }
 
 // prepare all events connections (SIGNAL -> SLOT)
@@ -50,11 +42,6 @@ void MainWindow::createActions()
 {
     act_about = new QAction(tr("&O programie..."), this);
     connect(act_about, SIGNAL(triggered()), this, SLOT(about()));
-
-    connect(ui->tabWidget_2, SIGNAL(currentChanged(int)), this, SLOT(mmpi2_tab_was_changed()));
-    connect(ui->pushButton_3, SIGNAL(clicked()), this, SLOT(mmpi2_test_true_button_pressed()));
-    connect(ui->pushButton_4, SIGNAL(clicked()), this, SLOT(mmpi2_test_false_button_pressed()));
-    connect(ui->pushButton_5, SIGNAL(clicked()), this, SLOT(mmpi2_test_next_button_pressed()));
 }
 
 // create menu
@@ -85,3 +72,4 @@ MainWindow::~MainWindow()
     ui->tableWidget->clearContents();
     delete ui;
 }
+
