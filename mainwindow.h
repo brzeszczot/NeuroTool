@@ -13,7 +13,7 @@
 #include <QKeyEvent>
 #include <QtDebug>
 #include <QRegExpValidator>
-//#include <QSettings>
+#include <QSettings>
 
 #include "boost/regex.hpp"
 #include "ui_mainwindow.h"
@@ -47,7 +47,7 @@ class MainWindow: public QMainWindow
         void mmpi2_test_next_button_pressed();
         //waisr
         void waisr_text_changed();
-private:
+    private:
         void keyPressEvent(QKeyEvent*);
         void setUpWidgets();
         void createActions();
@@ -62,6 +62,9 @@ private:
         void mmpi2_update_result_tab();
         void mmpi2_reset_table();
         void mmpi2_set_question_and_statusbar();
+        void mmpi2_read_settings();
+        void mmpi2_update_main_table(int row = -1);
+        void mmpi2_save_settings();
         // waisr
         void prepare_waisr_general_tab();
         std::string waisr_check_range(int value);
@@ -71,7 +74,9 @@ private:
         QMenu *menu_program;
         MMPI2::Calc *mmpi2;
         int mmpi2_current_test_question;
+        bool mmpi2_raw_answers_on;
         boost::cmatch reg_matches;
+        QSettings settings;
 };
 
 #endif // MAINWINDOW_H

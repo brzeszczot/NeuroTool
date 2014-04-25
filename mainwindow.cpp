@@ -9,7 +9,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     createActions();
     createMenus();
 
-    //statusBar()->showMessage(tr("Program gotowy do pracy..."));
     //if(regex_match(selected_item->text().toStdString().c_str(), reg_matches, reg_true))
     // this->setWindowTitle(QString::fromStdString(program_full_name));
     //QSettings settings;

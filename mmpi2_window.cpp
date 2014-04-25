@@ -3,6 +3,9 @@
 // prepare general settings for mmpi2 tab
 void MainWindow::prepare_mmpi2_general_tab()
 {
+    // create object MMPI-2 calculator
+    mmpi2 = new MMPI2::Calc();
+
     connect(ui->tabWidget_2, SIGNAL(currentChanged(int)), this, SLOT(mmpi2_tab_was_changed()));
     connect(ui->pushButton_3, SIGNAL(clicked()), this, SLOT(mmpi2_test_true_button_pressed()));
     connect(ui->pushButton_4, SIGNAL(clicked()), this, SLOT(mmpi2_test_false_button_pressed()));
@@ -10,10 +13,33 @@ void MainWindow::prepare_mmpi2_general_tab()
 
     ui->pushButton_3->setText(TRUE_NAME);
     ui->pushButton_4->setText(FALSE_NAME);
-    mmpi2_current_test_question = 0;
 
     prepareMMPI2Table();
     prepareMMPI2ResultTab();
+
+    mmpi2_read_settings();
+}
+
+void MainWindow::mmpi2_read_settings()
+{
+    int tmp = settings.value("mmpi2/mmpi2_current_test_question").toInt();
+    tmp > 0 ? mmpi2_current_test_question = tmp : mmpi2_current_test_question = 0;
+
+    bool btmp = settings.value("mmpi2/mmpi2_raw_answers_on").toBool();
+    btmp ? mmpi2_raw_answers_on = btmp : mmpi2_raw_answers_on = false;
+
+    if(mmpi2_current_test_question > 0)
+        mmpi2_raw_answers_on = true;
+
+    if(mmpi2_raw_answers_on)
+    {
+        for(int ii = 0; ii < MMPI2::Q_QUESTIONS; ii++)
+            mmpi2->raw_answers[ii] = (bool) settings.value("mmpi2/" + QString::number(ii)).toBool();
+
+        mmpi2_update_main_table();
+        mmpi2->update();
+        mmpi2_update_result_tab();
+    }
 }
 
 // prepare table with calculated results
@@ -107,9 +133,6 @@ ui->tableWidget->setCellWidget(rowCount, column, checkBox);
     }
    // QTableWidgetItem *a = ui->tableWidget->item(5,1);
    //int val = a->text().toInt();
-
-    // create object MMPI-2 calculator
-    mmpi2 = new MMPI2::Calc();
 }
 
 // one of table cell was selected (set TRUE or FALSE depends on user selection "bool v")
@@ -119,27 +142,23 @@ void MainWindow::event_mmpi2_set_cell(int row, int column, bool v)
 
     ui->tableWidget->selectionModel()->clearSelection();
     QModelIndex next_cell = ui->tableWidget->model()->index(row+1, column);
-    QTableWidgetItem *selected_item = ui->tableWidget->item(row,column);
 
     if(v)
     {
-        selected_item->setText(TRUE_NAME);
-        selected_item->setBackground(Qt::green);
         ui->tableWidget->selectionModel()->select(next_cell, QItemSelectionModel::Select);
         ui->tableWidget->setCurrentIndex(next_cell);
     }
     else
     {
-        selected_item->setText(FALSE_NAME);
-        selected_item->setBackground(Qt::red);
         ui->tableWidget->selectionModel()->select(next_cell, QItemSelectionModel::Select);
         ui->tableWidget->setCurrentIndex(next_cell);
     }
 
-    // calculate data and update result table
     mmpi2->update();
     mmpi2_update_result_tab();
-
+    mmpi2_raw_answers_on = true;
+    mmpi2_update_main_table(row);
+    mmpi2_save_settings();
     /*
     if(mmpi2_test_completed_check(column))
         ui->tabWidget_2->setCurrentIndex(1);
@@ -252,10 +271,13 @@ void MainWindow::mmpi2_tab_was_changed()
         if (reply == QMessageBox::Yes)
         {
             mmpi2_current_test_question = 0;    // (0) set question number one (for debug set 565)
+            mmpi2_raw_answers_on = false;
             mmpi2->reset_arrays();
+            mmpi2->reset_raw_answers();
             mmpi2_update_result_tab();
             mmpi2_reset_table();
             mmpi2_set_question_and_statusbar();
+            mmpi2_save_settings();
         }
         else if (reply == QMessageBox::No)
             ui->tabWidget_2->setCurrentIndex(0);
@@ -291,23 +313,15 @@ void MainWindow::mmpi2_test_next_button_pressed()
     // update calculations
     mmpi2->update();
     mmpi2_update_result_tab();
-
-    // update main input tab (colour and text)
-    QTableWidgetItem *selected_item = ui->tableWidget->item(mmpi2_current_test_question, 1);
-    if(mmpi2->raw_answers[mmpi2_current_test_question])
-    {
-        selected_item->setText(TRUE_NAME);
-        selected_item->setBackground(Qt::green);
-    }
-    else
-    {
-        selected_item->setText(FALSE_NAME);
-        selected_item->setBackground(Qt::red);
-    }
+    mmpi2_update_main_table();
+    mmpi2_save_settings();
 
     // select next question
     if(mmpi2_current_test_question < MMPI2::Q_QUESTIONS)
+    {
         mmpi2_current_test_question++;
+        settings.setValue("mmpi2/mmpi2_current_test_question", mmpi2_current_test_question);
+    }
 
     // update progressbar
     ui->progressBar->setValue(floor((mmpi2_current_test_question * 100) / MMPI2::Q_QUESTIONS));
@@ -334,4 +348,35 @@ void MainWindow::mmpi2_set_question_and_statusbar()
 {
     statusBar()->showMessage("Pytanie nr " + QString::number(mmpi2_current_test_question + 1) + " z " + QString::number(MMPI2::Q_QUESTIONS));
     ui->label->setText(QString::number(mmpi2_current_test_question + 1) + ". " + QString::fromStdString(MMPI2::questions[mmpi2_current_test_question]));
+}
+
+void MainWindow::mmpi2_update_main_table(int row)
+{
+    for(int ii = 0; ii < MMPI2::Q_QUESTIONS; ii++)
+    {
+        if(row >= 0)    ii = row;
+
+        QTableWidgetItem *selected_item = ui->tableWidget->item(ii, 1);
+        if(mmpi2->raw_answers[ii])
+        {
+            selected_item->setText(TRUE_NAME);
+            selected_item->setBackground(Qt::green);
+        }
+        else
+        {
+            selected_item->setText(FALSE_NAME);
+            selected_item->setBackground(Qt::red);
+        }
+
+        if(row >= 0)    break;
+    }
+}
+
+void MainWindow::mmpi2_save_settings()
+{
+    settings.setValue("mmpi2/mmpi2_current_test_question", mmpi2_current_test_question);
+    settings.setValue("mmpi2/mmpi2_raw_answers_on", mmpi2_raw_answers_on);
+
+    for(int ii = 0; ii < MMPI2::Q_QUESTIONS; ii++)
+        settings.setValue("mmpi2/" + QString::number(ii), (int) mmpi2->raw_answers[ii]);
 }

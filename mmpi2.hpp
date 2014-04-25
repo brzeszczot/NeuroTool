@@ -31,6 +31,7 @@ namespace MMPI2
             int trin_result;
             int vrin_result;
             void reset_arrays();
+            void reset_raw_answers();
     };
 
     const unsigned short int m_k[Q_K][4] =

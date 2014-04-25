@@ -3,11 +3,18 @@
 MMPI2::Calc::Calc()
 {
     reset_arrays();
+    reset_raw_answers();
 }
 
 MMPI2::Calc::~Calc()
 {
 
+}
+
+void MMPI2::Calc::reset_raw_answers()
+{
+    for(size_t ii=0; ii < Q_QUESTIONS; ii++)
+        raw_answers[ii] = false;
 }
 
 void MMPI2::Calc::reset_arrays()
