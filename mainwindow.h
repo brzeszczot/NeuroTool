@@ -74,7 +74,7 @@ class MainWindow: public QMainWindow
         QMenu *menu_program;
         MMPI2::Calc *mmpi2;
         int mmpi2_current_test_question;
-        bool mmpi2_raw_answers_on;
+        int mmpi2_last_raw_answer;
         boost::cmatch reg_matches;
         QSettings settings;
 };

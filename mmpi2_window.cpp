@@ -25,20 +25,19 @@ void MainWindow::mmpi2_read_settings()
     int tmp = settings.value("mmpi2/mmpi2_current_test_question").toInt();
     tmp > 0 ? mmpi2_current_test_question = tmp : mmpi2_current_test_question = 0;
 
-    bool btmp = settings.value("mmpi2/mmpi2_raw_answers_on").toBool();
-    btmp ? mmpi2_raw_answers_on = btmp : mmpi2_raw_answers_on = false;
+    tmp = settings.value("mmpi2/mmpi2_last_raw_answer").toInt();
+    tmp > 0 ? mmpi2_last_raw_answer = tmp : mmpi2_last_raw_answer = 0;
 
-    if(mmpi2_current_test_question > 0)
-        mmpi2_raw_answers_on = true;
-
-    if(mmpi2_raw_answers_on)
+    if(mmpi2_current_test_question > 0 || mmpi2_last_raw_answer > 0)
     {
         for(int ii = 0; ii < MMPI2::Q_QUESTIONS; ii++)
             mmpi2->raw_answers[ii] = (bool) settings.value("mmpi2/" + QString::number(ii)).toBool();
 
-        mmpi2_update_main_table();
+        mmpi2_update_main_table(std::max(mmpi2_current_test_question, mmpi2_last_raw_answer));
         mmpi2->update();
         mmpi2_update_result_tab();
+
+        qDebug() << mmpi2_current_test_question << " # " << mmpi2_last_raw_answer << "\n";
     }
 }
 
@@ -139,6 +138,7 @@ ui->tableWidget->setCellWidget(rowCount, column, checkBox);
 void MainWindow::event_mmpi2_set_cell(int row, int column, bool v)
 {
     mmpi2->raw_answers[row] = v;
+    mmpi2_last_raw_answer = row + 1;
 
     ui->tableWidget->selectionModel()->clearSelection();
     QModelIndex next_cell = ui->tableWidget->model()->index(row+1, column);
@@ -156,8 +156,7 @@ void MainWindow::event_mmpi2_set_cell(int row, int column, bool v)
 
     mmpi2->update();
     mmpi2_update_result_tab();
-    mmpi2_raw_answers_on = true;
-    mmpi2_update_main_table(row);
+    mmpi2_update_main_table(mmpi2_last_raw_answer);
     mmpi2_save_settings();
     /*
     if(mmpi2_test_completed_check(column))
@@ -271,7 +270,7 @@ void MainWindow::mmpi2_tab_was_changed()
         if (reply == QMessageBox::Yes)
         {
             mmpi2_current_test_question = 0;    // (0) set question number one (for debug set 565)
-            mmpi2_raw_answers_on = false;
+            mmpi2_last_raw_answer = 0;
             mmpi2->reset_arrays();
             mmpi2->reset_raw_answers();
             mmpi2_update_result_tab();
@@ -313,15 +312,13 @@ void MainWindow::mmpi2_test_next_button_pressed()
     // update calculations
     mmpi2->update();
     mmpi2_update_result_tab();
-    mmpi2_update_main_table();
-    mmpi2_save_settings();
 
     // select next question
     if(mmpi2_current_test_question < MMPI2::Q_QUESTIONS)
-    {
         mmpi2_current_test_question++;
-        settings.setValue("mmpi2/mmpi2_current_test_question", mmpi2_current_test_question);
-    }
+
+    mmpi2_save_settings();
+    mmpi2_update_main_table(mmpi2_current_test_question);
 
     // update progressbar
     ui->progressBar->setValue(floor((mmpi2_current_test_question * 100) / MMPI2::Q_QUESTIONS));
@@ -350,12 +347,16 @@ void MainWindow::mmpi2_set_question_and_statusbar()
     ui->label->setText(QString::number(mmpi2_current_test_question + 1) + ". " + QString::fromStdString(MMPI2::questions[mmpi2_current_test_question]));
 }
 
-void MainWindow::mmpi2_update_main_table(int row)
+void MainWindow::mmpi2_update_main_table(int uptorow)
 {
-    for(int ii = 0; ii < MMPI2::Q_QUESTIONS; ii++)
-    {
-        if(row >= 0)    ii = row;
+    int until;
+    if(uptorow > 0)
+        until = uptorow;
+    else
+        until = MMPI2::Q_QUESTIONS;
 
+    for(int ii = 0; ii < until; ii++)
+    {
         QTableWidgetItem *selected_item = ui->tableWidget->item(ii, 1);
         if(mmpi2->raw_answers[ii])
         {
@@ -367,15 +368,13 @@ void MainWindow::mmpi2_update_main_table(int row)
             selected_item->setText(FALSE_NAME);
             selected_item->setBackground(Qt::red);
         }
-
-        if(row >= 0)    break;
     }
 }
 
 void MainWindow::mmpi2_save_settings()
 {
     settings.setValue("mmpi2/mmpi2_current_test_question", mmpi2_current_test_question);
-    settings.setValue("mmpi2/mmpi2_raw_answers_on", mmpi2_raw_answers_on);
+    settings.setValue("mmpi2/mmpi2_last_raw_answer", mmpi2_last_raw_answer);
 
     for(int ii = 0; ii < MMPI2::Q_QUESTIONS; ii++)
         settings.setValue("mmpi2/" + QString::number(ii), (int) mmpi2->raw_answers[ii]);
