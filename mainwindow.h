@@ -14,6 +14,7 @@
 #include <QtDebug>
 #include <QRegExpValidator>
 #include <QSettings>
+#include <sstream>
 
 #include "boost/regex.hpp"
 #include "ui_mainwindow.h"

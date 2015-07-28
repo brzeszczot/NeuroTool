@@ -1,7 +1,7 @@
 #ifndef MMPI2_HPP
 #define MMPI2_HPP
 
-#include <String>
+#include <string>
 
 namespace MMPI2
 {

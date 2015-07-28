@@ -11,18 +11,17 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = NeuroTool
 TEMPLATE = app
 
+SOURCES +=  main.cpp\
+            mainwindow.cpp \
+            mmpi2.cpp \
+            mmpi2_window.cpp \
+            waisr.cpp \
+            waisr_window.cpp
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    mmpi2.cpp \
-    mmpi2_window.cpp \
-    waisr.cpp \
-    waisr_window.cpp
-
-HEADERS  += mainwindow.h \
-    mmpi2.hpp \
-    _draft.hpp \
-    waisr.hpp
+HEADERS +=  mainwindow.h \
+            mmpi2.hpp \
+            _draft.hpp \
+            waisr.hpp
 
 FORMS    += mainwindow.ui
 
@@ -36,5 +35,16 @@ macx:LIBS += -lboost_system-mt -lboost_regex-mt -lboost_filesystem-mt -lboost_th
 win32:RC_FILE = app.rc
 win32:INCLUDEPATH += "C:\Qt\Tools\boost_1_55_0"
 win32:LIBS += "C:\Qt\Tools\boost_1_55_0\stage\lib\libboost_regex-mgw48-mt-1_55.a"
+
+# unix: ICON = $${PWD}/ico.icns
+unix: INCLUDEPATH += -I/usr/include
+unix: LIBS += -L/usr/lib64
+unix: LIBS += -lboost_system-mt -lboost_regex-mt -lboost_filesystem-mt -lboost_thread-mt
+
+# other way:
+# unix {
+# INCLUDEPATH += ./fwefwef
+# }
+
 
 # hdiutil create -format UDBZ -quiet -srcfolder NeuroTool.app NeuroTool.dmg
